@@ -2,9 +2,14 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-version="${GODOT_VERSION:-4.7.2-stable}"
+version="4.7.2-stable"
 install_dir="$repo_root/.tools/godot"
 install_bin="$install_dir/godot"
+
+if [[ "$(uname -s)" != "Linux" ]]; then
+  printf 'FAIL: scripts/install-godot.sh currently supports Linux only.\n' >&2
+  exit 1
+fi
 
 case "$(uname -m)" in
   x86_64|amd64)
@@ -20,11 +25,6 @@ case "$(uname -m)" in
     exit 1
     ;;
 esac
-
-if [[ "$(uname -s)" != "Linux" ]]; then
-  printf 'FAIL: scripts/install-godot.sh currently supports Linux only.\n' >&2
-  exit 1
-fi
 
 for command_name in unzip sha256sum; do
   if ! command -v "$command_name" >/dev/null 2>&1; then
