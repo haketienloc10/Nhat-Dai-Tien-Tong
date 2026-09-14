@@ -4,23 +4,44 @@ Tài liệu này là source of truth cho cách bootstrap và xác minh repositor
 
 ## Prerequisites
 
-- Runtime: Godot 4.x.
-- Dependency ngoài: `git`, `rg` (ripgrep), Bash.
-- Environment variable bắt buộc: không có. Nếu executable không tên `godot`, đặt `GODOT_BIN=godot4` hoặc path phù hợp.
+- Runtime chuẩn của project: **Godot 4.7.2 stable**.
+- Ngôn ngữ: GDScript, không cần .NET build.
+- Dependency ngoài cho repo check: `git`, `rg` (ripgrep), Bash.
+- Dependency ngoài cho local Godot installer: `unzip`, `sha256sum`, và `curl` hoặc `wget`.
+- `GODOT_BIN` là tùy chọn. Nếu đặt, `scripts/verify.sh` ưu tiên executable đó.
 
 ## Bootstrap
 
-Repository không có dependency package ngoài Godot. Sau khi clone:
+Cách khuyến nghị trên Linux là cài Godot vào `.tools/` của repo để máy dev/agent/CI dùng cùng một version:
 
 ```bash
-git status --short
-${GODOT_BIN:-godot} --version
+bash scripts/install-godot.sh
 ```
 
-Mở editor khi cần phát triển tương tác:
+Script tải official Godot `4.7.2-stable`, xác minh SHA-256 rồi cài executable tại:
+
+```text
+.tools/godot/godot
+```
+
+`.tools/` không được commit.
+
+Nếu máy đã có Godot 4 trong `PATH`, `scripts/verify.sh` tự dò lần lượt `godot4` rồi `godot`. Có thể override trực tiếp:
 
 ```bash
-${GODOT_BIN:-godot} --editor --path .
+GODOT_BIN=/absolute/path/to/godot bash scripts/verify.sh
+```
+
+Kiểm tra version local đã pin:
+
+```bash
+.tools/godot/godot --version
+```
+
+Mở editor:
+
+```bash
+.tools/godot/godot --editor --path .
 ```
 
 ## Kiểm tra nhanh
@@ -31,10 +52,10 @@ Kiểm tra policy/template của agent harness và cú pháp shell:
 bash scripts/repo-check.sh
 ```
 
-Kiểm tra Godot import/parse project ở chế độ headless:
+Kiểm tra Godot import/parse project ở chế độ headless bằng executable local đã pin:
 
 ```bash
-${GODOT_BIN:-godot} --headless --path . --editor --quit
+.tools/godot/godot --headless --path . --editor --quit
 ```
 
 ## Test liên quan
@@ -42,7 +63,7 @@ ${GODOT_BIN:-godot} --headless --path . --editor --quit
 Smoke test hiện tại xác nhận `scenes/main/main.tscn` load và instantiate được:
 
 ```bash
-${GODOT_BIN:-godot} --headless --path . --script res://tests/smoke.gd
+.tools/godot/godot --headless --path . --script res://tests/smoke.gd
 ```
 
 Khi feature có test chuyên biệt, chạy test nhỏ nhất bao phủ acceptance trước, rồi chạy full verify nếu thay đổi chạm shared gameplay boundary.
@@ -56,21 +77,23 @@ bash scripts/verify.sh
 `verify.sh` chạy tuần tự:
 
 1. `scripts/repo-check.sh`;
-2. Godot headless editor parse/import;
-3. `tests/smoke.gd`.
+2. resolve Godot theo thứ tự `GODOT_BIN` → `.tools/godot/godot` → `godot4` → `godot`;
+3. xác nhận executable là Godot 4.x;
+4. Godot headless editor parse/import;
+5. `tests/smoke.gd`.
 
 Export executable chưa nằm trong bootstrap acceptance và sẽ được bổ sung khi có export preset/CI chính thức.
 
 ## Side effects
 
 - Database hoặc dữ liệu: không có.
-- Network hoặc service ngoài: không có trong verification hiện tại.
-- File hoặc generated output: Godot có thể tạo `.godot/`; thư mục này bị ignore khỏi Git.
-- Thời gian chạy dự kiến: vài giây trên máy đã cài Godot 4; lần import đầu có thể lâu hơn.
+- Network hoặc service ngoài: `scripts/install-godot.sh` tải official release từ `godotengine/godot-builds`; verification sau khi đã cài không cần network.
+- File hoặc generated output: installer tạo `.tools/`; Godot có thể tạo `.godot/`; cả hai bị ignore khỏi Git.
+- Thời gian chạy dự kiến: verification vài giây trên máy đã cài Godot; lần import đầu có thể lâu hơn.
 
 ## Known baseline failures
 
-- Chưa ghi nhận baseline failure. Nếu máy không tìm thấy executable `godot`, đây là thiếu prerequisite; đặt `GODOT_BIN` đúng rồi chạy lại.
+- Nếu `repo-check: PASS` nhưng báo `Godot 4 executable not found`, chạy `bash scripts/install-godot.sh` rồi chạy lại `bash scripts/verify.sh`.
 
 ## Khi không thể chạy verification
 
