@@ -1,28 +1,9 @@
-# Friction Observations
+# Friction
 
-Thư mục này lưu các vấn đề đã quan sát được khiến agent đổi planned approach,
-thực hiện lại một bước có chi phí hoặc làm giảm độ tin cậy của feedback loop.
+Ghi lại các trở ngại lặp lại trong workflow khi chúng có thể giúp agent hoặc developer tránh mất thời gian điều tra lại.
 
-Khi cần ghi nhận, chỉ đọc file README này. Không đọc, tìm kiếm, tổng hợp, gộp
-hoặc cập nhật các friction observation đã có.
+## Mục đã xác nhận
 
-Mỗi friction là một file riêng:
+- [`GODOT_BOOTSTRAP.md`](GODOT_BOOTSTRAP.md): `repo-check` PASS nhưng verification thiếu executable Godot; dùng local pinned installer.
 
-`<yyyy-mm-dd>-<short-name>.md`
-
-Format:
-
-```md
-# <Mô tả cụ thể vấn đề>
-
-- Impact:
-- Evidence:
-```
-
-Chỉ tạo file khi friction đáng kể, thuộc repository, tooling hoặc instruction
-của task và có evidence kiểm tra lại được. Không bắt buộc tìm root cause, đề
-xuất giải pháp hoặc sửa friction trong task hiện tại.
-
-Không ghi typo, command lỗi không đáng kể, hậu quả suy đoán, bug sản phẩm đang
-được xử lý hoặc việc agent thiếu kiến thức chung. Friction thuộc workspace hoặc
-cơ chế điều phối phải được trả về QiQi, không ghi tại đây.
+Chỉ ghi friction đã quan sát và có cách xử lý kiểm chứng được. Không dùng thư mục này làm task log hoặc nơi chứa giả thuyết chưa xác minh.

@@ -4,32 +4,42 @@ Game quản lý/simulation chủ đề tu tiên, phát triển theo workflow age
 
 ## Stack
 
-- Godot 4.x
+- Godot **4.7.2 stable**
 - GDScript
 - Data-driven content
 - Event-driven boundaries
 - State machine cho Tu sĩ
 - Headless verification để agent có thể kiểm chứng thay đổi
 
-## Chạy project
+## Bootstrap trên Linux
+
+Cài bản Godot đã pin vào `.tools/` của repo:
 
 ```bash
-godot --editor --path .
+bash scripts/install-godot.sh
 ```
 
-Nếu executable là `godot4`:
-
-```bash
-GODOT_BIN=godot4 bash scripts/verify.sh
-```
-
-## Verification
+Sau đó xác minh toàn bộ bootstrap:
 
 ```bash
 bash scripts/verify.sh
 ```
 
-Chi tiết: [`docs/VERIFY.md`](docs/VERIFY.md).
+`verify.sh` cũng tự dùng Godot 4 đã có trong `PATH` (`godot4` hoặc `godot`) nếu không có bản local. Có thể override bằng:
+
+```bash
+GODOT_BIN=/absolute/path/to/godot bash scripts/verify.sh
+```
+
+## Chạy project
+
+Với bản local đã pin:
+
+```bash
+.tools/godot/godot --editor --path .
+```
+
+Chi tiết verification: [`docs/VERIFY.md`](docs/VERIFY.md).
 
 ## Tài liệu chính
 

@@ -16,7 +16,7 @@ require_file() {
 command -v git >/dev/null 2>&1 || fail 'missing required command: git'
 command -v rg >/dev/null 2>&1 || fail 'missing required command: rg'
 
-for path in AGENTS.md CLAUDE.md ARCHITECTURE.md docs/VERIFY.md docs/REPO_SETUP.md docs/friction/README.md scripts/repo-check.sh; do
+for path in AGENTS.md CLAUDE.md ARCHITECTURE.md docs/VERIFY.md docs/REPO_SETUP.md docs/friction/README.md scripts/repo-check.sh scripts/verify.sh scripts/install-godot.sh; do
   require_file "$path"
 done
 
@@ -121,7 +121,10 @@ rg -q '^## Test liên quan$' "$verify" || fail 'docs/VERIFY.md: missing related 
 rg -q '^## Build hoặc kiểm tra đầy đủ$' "$verify" || fail 'docs/VERIFY.md: missing full verification command'
 rg -q '^## Side effects$' "$verify" || fail 'docs/VERIFY.md: missing side-effect documentation'
 
-bash -n "$repo_root/scripts/repo-check.sh" || fail 'scripts/repo-check.sh: invalid Bash syntax'
+for shell_script in scripts/repo-check.sh scripts/verify.sh scripts/install-godot.sh; do
+  [[ -f "$repo_root/$shell_script" ]] || continue
+  bash -n "$repo_root/$shell_script" || fail "$shell_script: invalid Bash syntax"
+done
 
 if ((errors > 0)); then
   printf 'repo-check: FAIL (%d error(s))\n' "$errors" >&2
