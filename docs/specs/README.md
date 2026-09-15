@@ -1,12 +1,15 @@
 # Repository Specifications
 
-Thư mục này lưu behavior, contract và acceptance criteria do repository hiện
-tại sở hữu và cần được bảo toàn qua thay đổi.
+Thư mục này lưu behavior, contract và acceptance criteria do repository hiện tại sở hữu và cần được bảo toàn qua thay đổi.
 
-Không cần tạo tài liệu cho behavior có thể đọc thấy trực tiếp và rõ ràng từ source
-hoặc test hiện tại. Khi task xác nhận behavior/contract không tầm thường mà agent
-tương lai cần hiểu ổn định hoặc nhiều thay đổi có thể dùng lại, tạo hoặc cập nhật
-specification phù hợp.
+## Specification index
+
+- [`GAME_DESIGN.md`](GAME_DESIGN.md): baseline game design/product terminology.
+- [`MVP.md`](MVP.md): **MVP master plan** — bối cảnh, core loop, nguyên tắc 1 object đại diện, architecture mục tiêu, roadmap P0–P12 và Definition of Done.
+- [`mvp/README.md`](mvp/README.md): index các phase execution chi tiết.
+- [`mvp/`](mvp/): từng phase P0–P12 với scope, task breakdown, architecture contract, acceptance và exit condition.
+
+Không cần tạo tài liệu cho behavior có thể đọc thấy trực tiếp và rõ ràng từ source hoặc test hiện tại. Khi task xác nhận behavior/contract không tầm thường mà agent tương lai cần hiểu ổn định hoặc nhiều thay đổi có thể dùng lại, tạo hoặc cập nhật specification phù hợp.
 
 Mỗi tài liệu nên nêu rõ:
 
@@ -16,6 +19,4 @@ Mỗi tài liệu nên nêu rõ:
 - acceptance criteria;
 - verification và source of truth.
 
-Nếu contract ảnh hưởng nhiều repository, giữ source of truth repo-local đúng phạm
-vi của repo hiện tại và handoff phần ảnh hưởng cùng evidence cho QiQi qua
-Cross-repo Impact. Không mô tả repository khác như nguồn sự thật tại đây.
+Nếu contract ảnh hưởng nhiều repository, giữ source of truth repo-local đúng phạm vi của repo hiện tại và handoff phần ảnh hưởng cùng evidence cho QiQi qua Cross-repo Impact. Không mô tả repository khác như nguồn sự thật tại đây.
